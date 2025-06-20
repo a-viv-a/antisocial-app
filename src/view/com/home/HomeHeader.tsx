@@ -1,5 +1,6 @@
 import React from 'react'
 import {useNavigation} from '@react-navigation/native'
+import {useHideFeedsPromoTab} from '#/state/preferences/hide-feeds-promo-tab'
 
 import {NavigationProp} from '#/lib/routes/types'
 import {FeedSourceInfo} from '#/state/queries/feed'
@@ -17,6 +18,7 @@ export function HomeHeader(
 ) {
   const {feeds} = props
   const {hasSession} = useSession()
+  const hideFeedsPromoTab = useHideFeedsPromoTab()
   const navigation = useNavigation<NavigationProp>()
 
   const hasPinnedCustom = React.useMemo<boolean>(() => {
@@ -29,11 +31,11 @@ export function HomeHeader(
 
   const items = React.useMemo(() => {
     const pinnedNames = feeds.map(f => f.displayName)
-    if (!hasPinnedCustom) {
+    if (!hasPinnedCustom && !hideFeedsPromoTab) {
       return pinnedNames.concat('Feeds ✨')
     }
     return pinnedNames
-  }, [hasPinnedCustom, feeds])
+  }, [hasPinnedCustom, hideFeedsPromoTab, feeds])
 
   const onPressFeedsLink = React.useCallback(() => {
     navigation.navigate('Feeds')
@@ -41,13 +43,13 @@ export function HomeHeader(
 
   const onSelect = React.useCallback(
     (index: number) => {
-      if (!hasPinnedCustom && index === items.length - 1) {
+      if (!hasPinnedCustom && !hideFeedsPromoTab && index === items.length - 1) {
         onPressFeedsLink()
       } else if (props.onSelect) {
         props.onSelect(index)
       }
     },
-    [items.length, onPressFeedsLink, props, hasPinnedCustom],
+    [items.length, onPressFeedsLink, props, hasPinnedCustom, hideFeedsPromoTab],
   )
 
   return (

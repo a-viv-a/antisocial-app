@@ -134,6 +134,7 @@ const schema = z.object({
   hideFollowNotifications: z.boolean().optional(),
   constellationInstance: z.string().optional(),
   showLinkInHandle: z.boolean().optional(),
+  hideFeedsPromoTab: z.boolean().optional(),
   deerVerification: z
     .object({
       enabled: z.boolean(),
@@ -203,6 +204,7 @@ export const defaults: Schema = {
   hideFollowNotifications: false,
   constellationInstance: 'https://constellation.microcosm.blue/',
   showLinkInHandle: false,
+  hideFeedsPromoTab: false,
   deerVerification: {
     enabled: false,
     // https://deer.social/profile/did:plc:p2cp5gopk7mgjegy6wadk3ep/post/3lndyqyyr4k2k
